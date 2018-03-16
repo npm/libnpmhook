@@ -12,7 +12,7 @@ const HOOK_URL = 'https://my.hook.url/'
 
 test('add', t => {
   tnock(t, OPTS.registry)
-    .post('/v1/hooks/hook')
+    .post('/-/npm/v1/hooks/hook')
     .reply(200, (uri, body) => body)
   return hooks.add('package', '@npm/hooks', HOOK_URL, 'sekrit', OPTS)
     .then(json => t.deepEqual(json, {
@@ -25,7 +25,7 @@ test('add', t => {
 
 test('rm', t => {
   tnock(t, OPTS.registry)
-    .delete('/v1/hooks/hook/1')
+    .delete('/-/npm/v1/hooks/hook/1')
     .reply(200, {ok: true})
   return hooks.rm(1, OPTS)
     .then(json => t.ok(json.ok, 'delete succeeded'))
@@ -33,7 +33,7 @@ test('rm', t => {
 
 test('ls', t => {
   tnock(t, OPTS.registry)
-    .get('/v1/hooks?package=%40npm%2Fhooks')
+    .get('/-/npm/v1/hooks?package=%40npm%2Fhooks')
     .reply(200, {objects: [{id: 1}]})
   return hooks.ls('@npm/hooks', OPTS)
     .then(json => t.deepEqual(json, [{id: 1}]))
@@ -41,7 +41,7 @@ test('ls', t => {
 
 test('update', t => {
   tnock(t, OPTS.registry)
-    .put('/v1/hooks/hook/1')
+    .put('/-/npm/v1/hooks/hook/1')
     .reply(200, (uri, body) => body)
   return hooks.update(1, HOOK_URL, 'sekrit', OPTS)
     .then(json => t.deepEqual(json, {
