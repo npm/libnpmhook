@@ -1,5 +1,5 @@
 {
-  "name": "npm-hooks",
+  "name": "libnpmhook",
   "version": "1.0.0",
   "description": "programmatic API for managing npm registry hooks",
   "main": "index.js",
@@ -16,7 +16,7 @@
     "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",
     "update-contrib": "weallcontribute -o . && git add CONTRIBUTING.md && git commit -m 'docs(contributing): updated CONTRIBUTING.md'"
   },
-  "repository": "https://github.com/npm/npm-hooks",
+  "repository": "https://github.com/npm/libnpmhook",
   "keywords": [
     "npm",
     "hooks",
