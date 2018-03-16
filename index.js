@@ -18,14 +18,15 @@ module.exports = {
       name = name.replace(/^@?/, '@')
     }
 
-    return fetch('/v1/hooks/hook', config({
+    opts = config({
       method: 'POST',
       body: { type, name, endpoint, secret }
-    }, opts))
+    }, opts)
+    return fetch.json('/v1/hooks/hook', opts)
   },
 
   rm (id, opts) {
-    return fetch(`/v1/hooks/hook/${encodeURIComponent(id)}`, config({
+    return fetch.json(`/v1/hooks/hook/${encodeURIComponent(id)}`, config({
       method: 'DELETE'
     }, opts))
   },
@@ -39,6 +40,6 @@ module.exports = {
     return fetch.json(`/v1/hooks/hook/${encodeURIComponent(id)}`, config({
       method: 'PUT',
       body: {endpoint, secret}
-    }))
+    }, opts))
   }
 }
