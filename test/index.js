@@ -10,14 +10,53 @@ const OPTS = {
 }
 const HOOK_URL = 'https://my.hook.url/'
 
-test('add', t => {
+test('add package hook', t => {
   tnock(t, OPTS.registry)
     .post('/-/npm/v1/hooks/hook')
     .reply(200, (uri, body) => body)
-  return hooks.add('package', '@npm/hooks', HOOK_URL, 'sekrit', OPTS)
+  return hooks.add('mypkg', HOOK_URL, 'sekrit', OPTS)
     .then(json => t.deepEqual(json, {
       type: 'package',
-      name: '@npm/hooks',
+      name: 'mypkg',
+      endpoint: HOOK_URL,
+      secret: 'sekrit'
+    }))
+})
+
+test('add scoped package hook', t => {
+  tnock(t, OPTS.registry)
+    .post('/-/npm/v1/hooks/hook')
+    .reply(200, (uri, body) => body)
+  return hooks.add('@myscope/mypkg', HOOK_URL, 'sekrit', OPTS)
+    .then(json => t.deepEqual(json, {
+      type: 'package',
+      name: '@myscope/mypkg',
+      endpoint: HOOK_URL,
+      secret: 'sekrit'
+    }))
+})
+
+test('add owner hook', t => {
+  tnock(t, OPTS.registry)
+    .post('/-/npm/v1/hooks/hook')
+    .reply(200, (uri, body) => body)
+  return hooks.add('~myuser', HOOK_URL, 'sekrit', OPTS)
+    .then(json => t.deepEqual(json, {
+      type: 'owner',
+      name: 'myuser',
+      endpoint: HOOK_URL,
+      secret: 'sekrit'
+    }))
+})
+
+test('add scope hook', t => {
+  tnock(t, OPTS.registry)
+    .post('/-/npm/v1/hooks/hook')
+    .reply(200, (uri, body) => body)
+  return hooks.add('@myscope', HOOK_URL, 'sekrit', OPTS)
+    .then(json => t.deepEqual(json, {
+      type: 'scope',
+      name: '@myscope',
       endpoint: HOOK_URL,
       secret: 'sekrit'
     }))

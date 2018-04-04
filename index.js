@@ -4,18 +4,14 @@ const config = require('./config')
 const fetch = require('npm-registry-fetch')
 
 module.exports = {
-  add (type, name, endpoint, secret, opts) {
-    if (
-      type !== 'scope' &&
-      name &&
-      name[0] === '@' &&
-      name.indexOf('/') === -1
-    ) {
+  add (name, endpoint, secret, opts) {
+    let type = 'package'
+    if (name && name.match(/^@[^/]+$/)) {
       type = 'scope'
     }
-
-    if (name && type === 'scope') {
-      name = name.replace(/^@?/, '@')
+    if (name && name[0] === '~') {
+      type = 'owner'
+      name = name.substr(1)
     }
 
     opts = config({
