@@ -26,8 +26,8 @@
   "author": "Kat Marchán <kzm@sykosomatic.org>",
   "license": "ISC",
   "dependencies": {
-    "figgy-pudding": "^2.0.1",
-    "npm-registry-fetch": "^1.0.1"
+    "figgy-pudding": "^3.0.0",
+    "npm-registry-fetch": "^2.1.0"
   },
   "devDependencies": {
     "nock": "^9.2.3",
