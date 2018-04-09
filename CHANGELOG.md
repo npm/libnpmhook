@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/npm/libnpmhook/compare/v4.0.0...v4.0.1) (2018-04-09)
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/npm/libnpmhook/compare/v3.0.1...v4.0.0) (2018-04-08)
 
