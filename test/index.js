@@ -1,88 +1,186 @@
 'use strict'
 
+const figgyPudding = require('figgy-pudding')
 const test = require('tap').test
 const tnock = require('./util/tnock.js')
 
 const hooks = require('../index.js')
 
-const OPTS = {
+const OPTS = figgyPudding({registry: {}})({
   registry: 'https://mock.reg/'
-}
+})
 const HOOK_URL = 'https://my.hook.url/'
 
 test('add package hook', t => {
+  const params = {
+    type: 'package',
+    name: 'mypkg',
+    endpoint: HOOK_URL,
+    secret: 'sekrit'
+  }
+  const hook = Object.assign({
+    id: 'deadbeef',
+    status: 'active'
+  }, params)
   tnock(t, OPTS.registry)
-    .post('/-/npm/v1/hooks/hook')
-    .reply(200, (uri, body) => body)
+    .post('/-/npm/v1/hooks/hook', params)
+    .reply(200, hook)
   return hooks.add('mypkg', HOOK_URL, 'sekrit', OPTS)
-    .then(json => t.deepEqual(json, {
-      type: 'package',
-      name: 'mypkg',
-      endpoint: HOOK_URL,
-      secret: 'sekrit'
-    }))
+    .then(json => t.deepEqual(json, hook))
 })
 
 test('add scoped package hook', t => {
+  const params = {
+    type: 'package',
+    name: '@myscope/mypkg',
+    endpoint: HOOK_URL,
+    secret: 'sekrit'
+  }
+  const hook = Object.assign({
+    id: 'deadbeef',
+    status: 'active'
+  }, params)
   tnock(t, OPTS.registry)
-    .post('/-/npm/v1/hooks/hook')
-    .reply(200, (uri, body) => body)
+    .post('/-/npm/v1/hooks/hook', params)
+    .reply(200, hook)
   return hooks.add('@myscope/mypkg', HOOK_URL, 'sekrit', OPTS)
-    .then(json => t.deepEqual(json, {
-      type: 'package',
-      name: '@myscope/mypkg',
-      endpoint: HOOK_URL,
-      secret: 'sekrit'
-    }))
+    .then(json => t.deepEqual(json, hook))
 })
 
 test('add owner hook', t => {
+  const params = {
+    type: 'owner',
+    name: 'myuser',
+    endpoint: HOOK_URL,
+    secret: 'sekrit'
+  }
+  const hook = Object.assign({
+    id: 'deadbeef',
+    status: 'active'
+  }, params)
   tnock(t, OPTS.registry)
-    .post('/-/npm/v1/hooks/hook')
-    .reply(200, (uri, body) => body)
+    .post('/-/npm/v1/hooks/hook', params)
+    .reply(200, hook)
   return hooks.add('~myuser', HOOK_URL, 'sekrit', OPTS)
-    .then(json => t.deepEqual(json, {
-      type: 'owner',
-      name: 'myuser',
-      endpoint: HOOK_URL,
-      secret: 'sekrit'
-    }))
+    .then(json => t.deepEqual(json, hook))
 })
 
 test('add scope hook', t => {
+  const params = {
+    type: 'scope',
+    name: '@myscope',
+    endpoint: HOOK_URL,
+    secret: 'sekrit'
+  }
+  const hook = Object.assign({
+    id: 'deadbeef',
+    status: 'active'
+  }, params)
   tnock(t, OPTS.registry)
-    .post('/-/npm/v1/hooks/hook')
-    .reply(200, (uri, body) => body)
+    .post('/-/npm/v1/hooks/hook', params)
+    .reply(200, hook)
   return hooks.add('@myscope', HOOK_URL, 'sekrit', OPTS)
-    .then(json => t.deepEqual(json, {
-      type: 'scope',
-      name: '@myscope',
-      endpoint: HOOK_URL,
-      secret: 'sekrit'
-    }))
+    .then(json => t.deepEqual(json, hook))
 })
 
 test('rm', t => {
   tnock(t, OPTS.registry)
-    .delete('/-/npm/v1/hooks/hook/1')
-    .reply(200, {ok: true})
-  return hooks.rm(1, OPTS)
-    .then(json => t.ok(json.ok, 'delete succeeded'))
+    .delete('/-/npm/v1/hooks/hook/hithere')
+    .reply(200, {id: 'hithere'})
+  return hooks.rm('hithere', OPTS)
+    .then(json => t.equal(json.id, 'hithere'))
+})
+
+test('rm null on 404', t => {
+  tnock(t, OPTS.registry)
+    .delete('/-/npm/v1/hooks/hook/hithere')
+    .reply(404)
+  return hooks.rm('hithere', OPTS)
+    .then(json => t.equal(json, null))
+})
+
+test('rm null on other err', t => {
+  tnock(t, OPTS.registry)
+    .delete('/-/npm/v1/hooks/hook/hithere')
+    .reply(401)
+  return hooks.rm('hithere', OPTS).then(
+    () => { throw new Error('should not succees') },
+    err => t.equal(err.code, 'E401', 'got a proper error + code')
+  )
+})
+
+test('find', t => {
+  tnock(t, OPTS.registry)
+    .get('/-/npm/v1/hooks/hook/hithere')
+    .reply(200, {id: 'hithere'})
+  return hooks.find('hithere', OPTS)
+    .then(json => t.equal(json.id, 'hithere'))
 })
 
 test('ls', t => {
+  const entries = [
+    {id: 'first'},
+    {id: 'second'},
+    {id: 'third'}
+  ]
+  tnock(t, OPTS.registry)
+    .get('/-/npm/v1/hooks')
+    .reply(200, {objects: entries})
+  return hooks.ls(OPTS).then(
+    json => t.deepEqual(json, entries)
+  )
+})
+
+test('ls package', t => {
+  const entries = [
+    {id: 'first'},
+    {id: 'second'},
+    {id: 'third'}
+  ]
   tnock(t, OPTS.registry)
     .get('/-/npm/v1/hooks?package=%40npm%2Fhooks')
-    .reply(200, {objects: [{id: 1}]})
-  return hooks.ls('@npm/hooks', OPTS)
-    .then(json => t.deepEqual(json, [{id: 1}]))
+    .reply(200, {objects: entries})
+  return hooks.ls(OPTS.concat({
+    package: '@npm/hooks'
+  })).then(json => t.deepEqual(json, entries))
+})
+
+test('ls limit+offset', t => {
+  const entries = [
+    {id: 'first'},
+    {id: 'second'},
+    {id: 'third'}
+  ]
+  tnock(t, OPTS.registry)
+    .get('/-/npm/v1/hooks?limit=10&offset=20')
+    .reply(200, {objects: entries})
+  return hooks.ls(OPTS.concat({
+    limit: 10,
+    offset: 20
+  })).then(json => t.deepEqual(json, entries))
+})
+
+test('ls package+limit+offset', t => {
+  const entries = [
+    {id: 'first'},
+    {id: 'second'},
+    {id: 'third'}
+  ]
+  tnock(t, OPTS.registry)
+    .get('/-/npm/v1/hooks?package=%40npm%2Fhooks&limit=10&offset=20')
+    .reply(200, {objects: entries})
+  return hooks.ls(OPTS.concat({
+    limit: 10,
+    offset: 20,
+    package: '@npm/hooks'
+  })).then(json => t.deepEqual(json, entries))
 })
 
 test('update', t => {
   tnock(t, OPTS.registry)
-    .put('/-/npm/v1/hooks/hook/1')
+    .put('/-/npm/v1/hooks/hook/hi')
     .reply(200, (uri, body) => body)
-  return hooks.update(1, HOOK_URL, 'sekrit', OPTS)
+  return hooks.update('hi', HOOK_URL, 'sekrit', OPTS)
     .then(json => t.deepEqual(json, {
       endpoint: HOOK_URL,
       secret: 'sekrit'
