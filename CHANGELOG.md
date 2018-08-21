@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0"></a>
+# [5.0.0](https://github.com/npm/libnpmhook/compare/v4.0.1...v5.0.0) (2018-08-21)
+
+
+### Features
+
+* **api:** overhauled API ([46b271b](https://github.com/npm/libnpmhook/commit/46b271b))
+
+
+### BREAKING CHANGES
+
+* **api:** the API for ls() has changed, and rm() no longer errors on 404
+
+
+
 <a name="4.0.1"></a>
 ## [4.0.1](https://github.com/npm/libnpmhook/compare/v4.0.0...v4.0.1) (2018-04-09)
 
