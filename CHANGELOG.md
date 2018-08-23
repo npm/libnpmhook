@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.1"></a>
+## [5.0.1](https://github.com/npm/libnpmhook/compare/v5.0.0...v5.0.1) (2018-08-23)
+
+
+### Bug Fixes
+
+* **deps:** move JSONStream to prod deps ([bb63594](https://github.com/npm/libnpmhook/commit/bb63594))
+
+
+
 <a name="5.0.0"></a>
 # [5.0.0](https://github.com/npm/libnpmhook/compare/v4.0.1...v5.0.0) (2018-08-21)
 
