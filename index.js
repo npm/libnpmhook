@@ -3,8 +3,6 @@
 const fetch = require('npm-registry-fetch')
 const figgyPudding = require('figgy-pudding')
 const getStream = require('get-stream')
-const JSONStream = require('JSONStream')
-const {PassThrough} = require('stream')
 const validate = require('aproba')
 
 const HooksConfig = figgyPudding({
@@ -69,25 +67,14 @@ cmd.ls = (opts) => {
 cmd.ls.stream = (opts) => {
   opts = HooksConfig(opts)
   const {package: pkg, limit, offset} = opts
-  const parser = JSONStream.parse('objects.*')
-  new opts.Promise((resolve, reject) => {
-    validate('S|Z', [pkg])
-    validate('N|Z', [limit])
-    validate('N|Z', [offset])
-    let query = {}
-    if (pkg) { query.package = pkg }
-    if (limit) { query.limit = limit }
-    if (offset) { query.offset = offset }
-    if (!Object.keys(query).length) { query = undefined }
-    return fetch('/-/npm/v1/hooks', opts.concat({query})).then(resolve, reject)
-  }).then(res => {
-    // NOTE: I couldn't figure out how to test the following, so meh
-    /* istanbul ignore next */
-    res.body.on('error', err => parser.emit('error', err))
-    res.body.pipe(parser)
-  })
-  const pt = new PassThrough({objectMode: true})
-  /* istanbul ignore next */
-  parser.on('error', err => pt.emit('error', err))
-  return parser.pipe(pt)
+  validate('S|Z', [pkg])
+  validate('N|Z', [limit])
+  validate('N|Z', [offset])
+  return fetch.json.stream('/-/npm/v1/hooks', 'objects.*', opts.concat({
+    query: {
+      package: pkg,
+      limit,
+      offset
+    }
+  }))
 }
