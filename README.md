@@ -1,10 +1,28 @@
-# libnpmhook [![npm version](https://img.shields.io/npm/v/libnpmhook.svg)](https://npm.im/libnpmhook) [![license](https://img.shields.io/npm/l/libnpmhook.svg)](https://npm.im/libnpmhook) [![Travis](https://img.shields.io/travis/npm/libnpmhook.svg)](https://travis-ci.org/npm/libnpmhook) [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/zkat/libnpmhook?svg=true)](https://ci.appveyor.com/project/zkat/libnpmhook) [![Coverage Status](https://coveralls.io/repos/github/npm/libnpmhook/badge.svg?branch=latest)](https://coveralls.io/github/npm/libnpmhook?branch=latest)
+# libnpmhook
+
+[![npm version](https://img.shields.io/npm/v/libnpmhook.svg)](https://npm.im/libnpmhook)
+[![license](https://img.shields.io/npm/l/libnpmhook.svg)](https://npm.im/libnpmhook)
+[![Travis](https://img.shields.io/travis/npm/libnpmhook.svg)](https://travis-ci.org/npm/libnpmhook)
+[![Coverage Status](https://coveralls.io/repos/github/npm/libnpmhook/badge.svg?branch=latest)](https://coveralls.io/github/npm/libnpmhook?branch=latest)
 
 [`libnpmhook`](https://github.com/npm/libnpmhook) is a Node.js library for
 programmatically managing the npm registry's server-side hooks.
 
 For a more general introduction to managing hooks, see [the introductory blog
 post](https://blog.npmjs.org/post/145260155635/introducing-hooks-get-notifications-of-npm).
+
+## Table of Contents
+
+* [Example](#example)
+* [Install](#install)
+* [Contributing](#contributing)
+* [API](#api)
+  * [hook opts](#opts)
+  * [`add()`](#add)
+  * [`rm()`](#rm)
+  * [`ls()`](#ls)
+  * [`ls.stream()`](#ls-stream)
+  * [`update()`](#update)
 
 ## Example
 
@@ -19,17 +37,22 @@ console.log(await hooks.ls('mypkg', {token: 'deadbeef'}))
 
 `$ npm install libnpmhook`
 
-## Table of Contents
+### Contributing
 
-* [Example](#example)
-* [Install](#install)
-* [API](#api)
-  * [hook opts](#opts)
-  * [`add()`](#add)
-  * [`rm()`](#rm)
-  * [`ls()`](#ls)
-  * [`ls.stream()`](#ls-stream)
-  * [`update()`](#update)
+The npm team enthusiastically welcomes contributions and project participation!
+There's a bunch of things you can do if you want to contribute! The
+[Contributor Guide](https://github.com/npm/cli/blob/latest/CONTRIBUTING.md)
+outlines the process for community interaction and contribution. Please don't
+hesitate to jump in if you'd like to, or even ask us questions if something
+isn't clear.
+
+All participants and maintainers in this project are expected to follow the
+[npm Code of Conduct](https://www.npmjs.com/policies/conduct), and just
+generally be excellent to each other.
+
+Please refer to the [Changelog](CHANGELOG.md) for project history details, too.
+
+Happy hacking!
 
 ### API
 
@@ -68,7 +91,7 @@ See also: [`POST
 ##### Example
 
 ```javascript
-await hooks.add('~zkat', 'https://zkat.tech/api/added', 'supersekrit', {
+await hooks.add('~zkat', 'https://example.com/api/added', 'supersekrit', {
   token: 'myregistrytoken',
   otp: '694207'
 })
@@ -78,7 +101,7 @@ await hooks.add('~zkat', 'https://zkat.tech/api/added', 'supersekrit', {
 { id: '16f7xoal',
   username: 'zkat',
   name: 'zkat',
-  endpoint: 'https://zkat.tech/api/added',
+  endpoint: 'https://example.com/api/added',
   secret: 'supersekrit',
   type: 'owner',
   created: '2018-08-21T20:05:25.125Z',
@@ -110,7 +133,7 @@ await hooks.find('16f7xoal', {token: 'myregistrytoken'})
 { id: '16f7xoal',
   username: 'zkat',
   name: 'zkat',
-  endpoint: 'https://zkat.tech/api/added',
+  endpoint: 'https://example.com/api/added',
   secret: 'supersekrit',
   type: 'owner',
   created: '2018-08-21T20:05:25.125Z',
@@ -145,7 +168,7 @@ await hooks.rm('16f7xoal', {
 { id: '16f7xoal',
   username: 'zkat',
   name: 'zkat',
-  endpoint: 'https://zkat.tech/api/added',
+  endpoint: 'https://example.com/api/added',
   secret: 'supersekrit',
   type: 'owner',
   created: '2018-08-21T20:05:25.125Z',
@@ -183,7 +206,7 @@ See also: [`PUT
 ##### Example
 
 ```javascript
-await hooks.update('16fxoal', 'https://zkat.tech/api/other', 'newsekrit', {
+await hooks.update('16fxoal', 'https://example.com/api/other', 'newsekrit', {
   token: 'myregistrytoken',
   otp: '694207'
 })
@@ -193,7 +216,7 @@ await hooks.update('16fxoal', 'https://zkat.tech/api/other', 'newsekrit', {
 { id: '16f7xoal',
   username: 'zkat',
   name: 'zkat',
-  endpoint: 'https://zkat.tech/api/other',
+  endpoint: 'https://example.com/api/other',
   secret: 'newsekrit',
   type: 'owner',
   created: '2018-08-21T20:05:25.125Z',
