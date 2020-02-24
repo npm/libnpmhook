@@ -12,9 +12,10 @@
     "postrelease": "npm publish && git push --follow-tags",
     "pretest": "standard",
     "release": "standard-version -s",
-    "test": "tap -J --100 --coverage test/*.js",
-    "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",
-    "update-contrib": "weallcontribute -o . && git add CONTRIBUTING.md && git commit -m 'docs(contributing): updated CONTRIBUTING.md'"
+    "test": "tap"
+  },
+  "tap": {
+    "check-coverage": true
   },
   "repository": "https://github.com/npm/libnpmhook",
   "keywords": [
@@ -27,15 +28,15 @@
   "license": "ISC",
   "dependencies": {
     "aproba": "^2.0.0",
-    "get-stream": "^4.0.0",
-    "npm-registry-fetch": "^3.8.0"
+    "npm-registry-fetch": "^8.0.0"
   },
   "devDependencies": {
     "nock": "^9.6.1",
     "standard": "^11.0.1",
     "standard-version": "^4.4.0",
-    "tap": "^12.0.1",
-    "weallbehave": "^1.2.0",
-    "weallcontribute": "^1.0.8"
+    "tap": "^14.10.6"
+  },
+  "engines": {
+    "node": ">=10"
   }
 }
