@@ -1,6 +1,5 @@
 'use strict'
 
-// const figgyPudding = require('figgy-pudding')
 const test = require('tap').test
 const tnock = require('./fixtures/tnock.js')
 

@@ -2,7 +2,6 @@
 
 [![npm version](https://img.shields.io/npm/v/libnpmhook.svg)](https://npm.im/libnpmhook)
 [![license](https://img.shields.io/npm/l/libnpmhook.svg)](https://npm.im/libnpmhook)
-[![Travis](https://img.shields.io/travis/npm/libnpmhook.svg)](https://travis-ci.org/npm/libnpmhook)
 [![Coverage Status](https://coveralls.io/repos/github/npm/libnpmhook/badge.svg?branch=latest)](https://coveralls.io/github/npm/libnpmhook?branch=latest)
 
 [`libnpmhook`](https://github.com/npm/libnpmhook) is a Node.js library for
@@ -37,23 +36,6 @@ console.log(await hooks.ls('mypkg', {token: 'deadbeef'}))
 
 `$ npm install libnpmhook`
 
-### Contributing
-
-The npm team enthusiastically welcomes contributions and project participation!
-There's a bunch of things you can do if you want to contribute! The
-[Contributor Guide](https://github.com/npm/cli/blob/latest/CONTRIBUTING.md)
-outlines the process for community interaction and contribution. Please don't
-hesitate to jump in if you'd like to, or even ask us questions if something
-isn't clear.
-
-All participants and maintainers in this project are expected to follow the
-[npm Code of Conduct](https://www.npmjs.com/policies/conduct), and just
-generally be excellent to each other.
-
-Please refer to the [Changelog](CHANGELOG.md) for project history details, too.
-
-Happy hacking!
-
 ### API
 
 #### <a name="opts"></a> `opts` for `libnpmhook` commands
@@ -68,7 +50,6 @@ A couple of options of note for those in a hurry:
 
 * `opts.token` - can be passed in and will be used as the authentication token for the registry. For other ways to pass in auth details, see the n-r-f docs.
 * `opts.otp` - certain operations will require an OTP token to be passed in. If a `libnpmhook` command fails with `err.code === EOTP`, please retry the request with `{otp: <2fa token>}`
-* `opts.Promise` - If you pass this in, the Promises returned by `libnpmhook` commands will use this Promise class instead. For example: `{Promise: require('bluebird')}`
 
 #### <a name="add"></a> `> hooks.add(name, endpoint, secret, [opts]) -> Promise`
 
