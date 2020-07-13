@@ -33,7 +33,7 @@
   "devDependencies": {
     "nock": "^9.6.1",
     "standard": "^11.0.1",
-    "standard-version": "^4.4.0",
+    "standard-version": "^8.0.1",
     "tap": "^14.10.6"
   },
   "engines": {
