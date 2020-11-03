@@ -28,7 +28,7 @@
   "license": "ISC",
   "dependencies": {
     "aproba": "^2.0.0",
-    "npm-registry-fetch": "^8.0.0"
+    "npm-registry-fetch": "^9.0.0"
   },
   "devDependencies": {
     "nock": "^9.6.1",
